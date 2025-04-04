@@ -1,0 +1,32 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-error.log
+pnpm-debug.log
+
+# TypeScript build output
+dist/
+out/
+*.js
+*.js.map
+*.d.ts
+
+# VSCode settings and workspace-specific files
+.vscode/
+.vscode-test/
+
+# Logs and temporary files
+*.log
+tmp/
+temp/
+
+# Dependency lock files (keep only the one you use)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Ignore compiled vsix package
+*.vsix
+
+
+.DS_Store
