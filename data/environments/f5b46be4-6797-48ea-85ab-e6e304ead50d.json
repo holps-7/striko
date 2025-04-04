@@ -1,0 +1,8 @@
+{
+  "id": "f5b46be4-6797-48ea-85ab-e6e304ead50d",
+  "name": "Development",
+  "variables": {
+    "baseUrl": "https://dev-api.example.com",
+    "apiKey": "dev-api-key-12345"
+  }
+}

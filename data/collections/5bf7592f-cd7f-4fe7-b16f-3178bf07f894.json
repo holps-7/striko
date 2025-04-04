@@ -1,0 +1,20 @@
+{
+  "id": "5bf7592f-cd7f-4fe7-b16f-3178bf07f894",
+  "name": "Sample APIs",
+  "requests": [
+    {
+      "id": "f43c26ab-8261-4818-9350-995f17d8a95d",
+      "name": "Get Users",
+      "url": "https://jsonplaceholder.typicode.com/users",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "id": "eacf80a8-8fec-45c1-9888-41ed55eae565",
+      "name": "Get Posts",
+      "url": "https://jsonplaceholder.typicode.com/posts",
+      "method": "GET",
+      "headers": {}
+    }
+  ]
+}
