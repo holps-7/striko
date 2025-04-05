@@ -3,21 +3,24 @@
   align-items: stretch;
   padding: 0;
   margin: 15px;
-  border: 1px solid #555;
-  background-color: #1e1e1e;
+  border: 1px solid var(--border-color, #555);
+  background-color: var(--bg-color, #1e1e1e);
+  min-width: 0; /* Allows container to shrink below content size */
 }
 
 .url-bar {
   display: flex;
   flex: 1;
+  min-width: 0; /* Allows flex item to shrink below content size */
 }
 
 .method-select {
   width: 80px;
+  min-width: 80px; /* Prevents method select from shrinking */
   background-color: transparent;
-  color: #fff;
+  color: var(--text-color, #fff);
   border: none;
-  border-right: 1px solid #555;
+  border-right: 1px solid var(--border-color, #555);
   padding: 8px;
   cursor: pointer;
   outline: none;
@@ -29,11 +32,15 @@
 
 .url-input {
   flex: 1;
+  min-width: 50px; /* Allows URL input to shrink but maintains minimum width */
   background-color: transparent;
-  color: #fff;
+  color: var(--text-color, #fff);
   border: none;
   padding: 8px;
   outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .url-input:focus {
@@ -45,9 +52,32 @@
 }
 
 .button {
-  background-color: #1e88e5;
-  color: white;
+  min-width: 80px; /* Prevents button from shrinking below readable size */
+  background-color: var(--button-bg, #1e88e5);
+  color: var(--button-fg, white);
   border: none;
   padding: 8px 20px;
   cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Media query for very small widths */
+@media (max-width: 350px) {
+  .header-container {
+    flex-wrap: wrap;
+  }
+  
+  .url-bar {
+    flex: 1 0 100%;
+  }
+  
+  .action-buttons {
+    margin-top: 8px;
+    width: 100%;
+  }
+  
+  .button {
+    flex: 1;
+    text-align: center;
+  }
 }
