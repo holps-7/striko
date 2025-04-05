@@ -7,9 +7,16 @@ pnpm-debug.log
 # TypeScript build output
 dist/
 out/
-*.js
-*.js.map
-*.d.ts
+
+# Keep configuration JS files
+!webpack.config.js
+!esbuild.js
+!.eslintrc.js
+
+# Ignore generated JS/TS files
+src/**/*.js
+src/**/*.js.map
+src/**/*.d.ts
 
 # VSCode settings and workspace-specific files
 .vscode/
@@ -28,5 +35,6 @@ pnpm-lock.yaml
 # Ignore compiled vsix package
 *.vsix
 
-
+# OS specific files
 .DS_Store
+Thumbs.db
