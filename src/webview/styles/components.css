@@ -1,0 +1,98 @@
+:root {
+    --bg-color: var(--vscode-editor-background);
+    --text-color: var(--vscode-editor-foreground);
+    --border-color: var(--vscode-panel-border);
+    --input-bg: var(--vscode-input-background);
+    --input-fg: var(--vscode-input-foreground);
+    --button-bg: var(--vscode-button-background);
+    --button-fg: var(--vscode-button-foreground);
+    --button-hover-bg: var(--vscode-button-hoverBackground);
+    --tab-active-bg: var(--vscode-tab-activeBackground);
+    --tab-inactive-bg: var(--vscode-tab-inactiveBackground);
+    --tab-active-fg: var(--vscode-tab-activeForeground);
+    --tab-inactive-fg: var(--vscode-tab-inactiveForeground);
+  }
+  
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--vscode-font-family);
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .content-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+  
+  .request-container {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-color);
+  }
+  
+  .response-container {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  
+  /* Toast notification */
+  .toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: var(--button-bg);
+    color: var(--button-fg);
+    padding: 10px 15px;
+    border-radius: 4px;
+    z-index: 1000;
+    display: none;
+    animation: fadeIn 0.3s, fadeOut 0.3s 1.7s;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  
+  /* Keyboard shortcut tooltip */
+  .shortcut-hint {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0.8;
+    z-index: 1000;
+  }
+  
+  .shortcut-hint kbd {
+    background: var(--button-bg);
+    color: var(--button-fg);
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin: 0 3px;
+  }

@@ -1,0 +1,53 @@
+.header-container {
+  display: flex;
+  align-items: stretch;
+  padding: 0;
+  margin: 15px;
+  border: 1px solid #555;
+  background-color: #1e1e1e;
+}
+
+.url-bar {
+  display: flex;
+  flex: 1;
+}
+
+.method-select {
+  width: 80px;
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  border-right: 1px solid #555;
+  padding: 8px;
+  cursor: pointer;
+  outline: none;
+}
+
+.method-select:focus {
+  box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.4) inset;
+}
+
+.url-input {
+  flex: 1;
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  padding: 8px;
+  outline: none;
+}
+
+.url-input:focus {
+  box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.4) inset;
+}
+
+.action-buttons {
+  display: flex;
+}
+
+.button {
+  background-color: #1e88e5;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  cursor: pointer;
+}
