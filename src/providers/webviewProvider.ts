@@ -50,53 +50,41 @@ export class WebviewProvider {
       }
     );
 
-    // Get path to extension
-    const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, 'dist', 'webview.js');
-    // And convert to webview URI
-    const scriptUri = this._panel.webview.asWebviewUri(scriptPathOnDisk);
-
-    // Set the webview's html content
-    this._panel.webview.html = `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${this._panel.webview.cspSource}; script-src ${this._panel.webview.cspSource};">
-      <title>Striko API Client</title>
-    </head>
-    <body>
-      <div class="main-container">
-        <div class="content-container">
-          <!-- Request side -->
-          <div class="request-container">
-            <div id="request-header"></div>
-            <div id="request-tabs"></div>
-            <div class="panels-container" id="request-panels"></div>
-          </div>
-          
-          <!-- Resizer -->
-          <div class="resizer" id="resizer"></div>
-          
-          <!-- Response side -->
-          <div class="response-container">
-            <div id="response-status"></div>
-            <div id="response-tabs"></div>
-            <div class="panels-container" id="response-panels"></div>
-          </div>
+    // Find the bundled webview HTML file
+    try {
+      // Get paths to bundled resources
+      const webviewHtmlPath = vscode.Uri.joinPath(this._extensionUri, 'dist', 'webview.html');
+      const webviewHtmlPathOnDisk = webviewHtmlPath.fsPath;
+      
+      // Read the HTML file content
+      let htmlContent = fs.readFileSync(webviewHtmlPathOnDisk, 'utf8');
+      
+      // Convert all asset paths to webview URIs
+      htmlContent = this.rewriteAssetPaths(htmlContent, this._panel.webview);
+      
+      // Set the webview's HTML content
+      this._panel.webview.html = htmlContent;
+    } catch (error) {
+      // Fallback if bundled HTML isn't found
+      console.error('Error loading webview HTML:', error);
+      
+      // Create a basic HTML page
+      this._panel.webview.html = `<!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Striko API Client</title>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${this._panel.webview.cspSource}; script-src ${this._panel.webview.cspSource};">
+      </head>
+      <body>
+        <div style="padding: 20px; text-align: center;">
+          <h2>Failed to load Striko API Client</h2>
+          <p>Please try reloading the extension.</p>
         </div>
-      </div>
-      
-      <!-- Shortcut hint -->
-      <div class="shortcut-hint">
-        Save to Activity: <kbd>Ctrl</kbd>+<kbd>S</kbd> or <kbd>⌘</kbd>+<kbd>S</kbd>
-      </div>
-      
-      <!-- Toast notification -->
-      <div class="toast" id="saveToast">Request saved to Activity</div>
-      
-      <script src="${scriptUri}"></script>
-    </body>
-    </html>`;
+      </body>
+      </html>`;
+    }
 
     // Handle messages from the webview
     this._panel.webview.onDidReceiveMessage(async (message) => {
@@ -155,6 +143,37 @@ export class WebviewProvider {
     );
   }
 
+  /**
+   * Rewrites asset paths in the HTML to use webview URIs
+   */
+  private rewriteAssetPaths(htmlContent: string, webview: vscode.Webview): string {
+    // Match script and stylesheet tags with src/href attributes
+    const scriptRegex = /<script[^>]*src=['"]([^'"]+)['"]/g;
+    const styleRegex = /<link[^>]*href=['"]([^'"]+)['"][^>]*>/g;
+    
+    // Rewrite script sources
+    htmlContent = htmlContent.replace(scriptRegex, (match, src) => {
+      if (src.startsWith('./') || src.startsWith('../') || !src.startsWith('http')) {
+        const assetUri = vscode.Uri.joinPath(this._extensionUri, 'dist', src);
+        const webviewUri = webview.asWebviewUri(assetUri).toString();
+        return match.replace(src, webviewUri);
+      }
+      return match;
+    });
+    
+    // Rewrite stylesheet href attributes
+    htmlContent = htmlContent.replace(styleRegex, (match, href) => {
+      if (href.startsWith('./') || href.startsWith('../') || !href.startsWith('http')) {
+        const assetUri = vscode.Uri.joinPath(this._extensionUri, 'dist', href);
+        const webviewUri = webview.asWebviewUri(assetUri).toString();
+        return match.replace(href, webviewUri);
+      }
+      return match;
+    });
+    
+    return htmlContent;
+  }
+
   public loadRequest(request: Request) {
     if (this._panel) {
       this._currentRequest = request;
@@ -187,5 +206,4 @@ export class WebviewProvider {
   public async getCurrentRequest(): Promise<Request | undefined> {
     return this._currentRequest;
   }
-
 }
